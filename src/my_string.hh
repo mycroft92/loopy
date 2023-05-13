@@ -6,7 +6,7 @@
 // code.
 //
 // Restrictions: you may not use the std::string class in your implementation.
-#include <cstring> // this is required only for strlen and strcpy functions which operate on c-char arrays
+#include <cstring> // this is required only for strlen and strcpy, strcat functions which operate on c-char arrays
 #include <iostream>
 class my_string {
   // Your implementation goes here
@@ -22,7 +22,7 @@ class my_string {
     my_string();
 
     //Constructor when I need to copy another character buffer contents
-    my_string(char* cbuf);
+    my_string(const char* cbuf);
 
     //Copying needs this
     my_string(const my_string& src);
@@ -36,7 +36,16 @@ class my_string {
     //To avoid declaring it as friend, the only solution I can think of is to make str public which is bad.
     friend std::ostream& operator<<(std::ostream& os, const my_string& obj);
 
-    //= assignment operator to allow definitions in the form: my_string a = "abcd"; 
+    //overriding == operators
+    bool operator==(const my_string& rhs) const; // compares with my_string object
+    bool operator==(const char* rhs) const; // compares with character array
 
+    //overriding + operators
+    my_string operator+(my_string& rhs);
+    my_string operator+(char* operand);
 
+    //overriding = operator (without this we get a use after free on alpha_and_omega = Alpha + " and the " + Omega;)
+    my_string& operator=(const my_string& rhs);
+
+    my_string reverse() const; //standard string reverse
 };
